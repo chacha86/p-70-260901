@@ -20,15 +20,14 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member author;
 
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    List<PostComment> comments = new ArrayList<>();
+
     public Post(Member author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;
     }
-
-
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    List<PostComment> comments = new ArrayList<>();
 
     public PostComment findCommentById(int id) {
         return comments
