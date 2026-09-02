@@ -26,6 +26,10 @@ public class MemberService {
 
     public Member join(String username, String password, String nickname, String apiKey) {
 
+        if (memberRepository.findByUsername(username).isPresent()) {
+            throw new ServiceException("409-1", "이미 사용중인 아이디입니다.");
+        }
+
         if(apiKey == null) {
             apiKey = UUID.randomUUID().toString();
         }
