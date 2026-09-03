@@ -5,6 +5,7 @@ import com.back.p67260811.domain.member.entity.Member;
 import com.back.p67260811.domain.member.service.MemberService;
 import com.back.p67260811.global.dto.RsData;
 import com.back.p67260811.global.exception.ServiceException;
+import com.back.p67260811.global.rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApiV1MemberController {
 
     private final MemberService memberService;
+    private final Rq rq;
 
     record JoinReqBody(
             @NotBlank
@@ -68,7 +70,8 @@ public class ApiV1MemberController {
     record LoginResBody(
             MemberDto memberDto,
             String apiKey
-    ){}
+    ) {
+    }
 
     @PostMapping("/login")
     public RsData<MemberDto> login(
@@ -80,7 +83,7 @@ public class ApiV1MemberController {
                 () -> new ServiceException("401-1", "존재하지 않는 회원입니다.")
         );
         // 2. 존재하면 비밀 번호 체크
-        if(!actor.getPassword().equals(reqBody.password)) {
+        if (!actor.getPassword().equals(reqBody.password)) {
             throw new ServiceException("401-2", "비밀번호가 일치하지 않습니다.");
         }
         // 3. 비밀 번호가 맞으면 인증 데이터(apiKey) 제공
@@ -92,6 +95,18 @@ public class ApiV1MemberController {
                         new MemberDto(actor),
                         actor.getApiKey()
                 )
+        );
+    }
+
+    @GetMapping("/me")
+    public RsData<MemberDto> me() {
+
+        Member actor = rq.getActor();
+
+        return new RsData(
+                "200-1",
+                "OK",
+                new MemberDto(actor)
         );
     }
 }
