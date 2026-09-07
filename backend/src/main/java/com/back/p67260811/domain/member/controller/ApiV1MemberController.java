@@ -126,12 +126,13 @@ public class ApiV1MemberController {
     @GetMapping("/me")
     public RsData<MemberDto> me() {
 
-        Member actor = rq.getActor();
+        Member actor = rq.getActor(); // 인증
+        Member realActor = memberService.findById(actor.getId()).get(); // 인증된 사용자 정보 가져오기
 
         return new RsData(
                 "200-1",
                 "OK",
-                new MemberDto(actor)
+                new MemberDto(realActor)
         );
     }
 }
