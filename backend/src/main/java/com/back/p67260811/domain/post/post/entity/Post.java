@@ -19,7 +19,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member author;
+    private Member author; // 외래키인 id만 사용
 
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     List<PostComment> comments = new ArrayList<>();

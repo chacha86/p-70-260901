@@ -20,6 +20,11 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String apiKey; // 나중에 활용 -> 리프레시 토큰
 
+    public Member(int id, String username) {
+        setId(id);
+        this.username = username;
+    }
+
     public Member(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
