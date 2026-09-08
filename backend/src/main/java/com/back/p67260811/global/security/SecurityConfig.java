@@ -33,9 +33,4 @@ public class SecurityConfig {
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
