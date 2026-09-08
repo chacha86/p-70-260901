@@ -82,12 +82,12 @@ public class Rq {
 
     }
 
-    private void setHeader(String name, String value) {
+    public void setHeader(String name, String value) {
         response.setHeader(name, value);
     }
 
 
-    private String getCookieValue(String name, String defaultValue) {
+    public String getCookieValue(String name, String defaultValue) {
         return Optional
                 .ofNullable(request.getCookies())
                 .flatMap(
@@ -122,7 +122,7 @@ public class Rq {
 
     }
 
-    private String getHeader(String name, String defaultValue) {
+    public String getHeader(String name, String defaultValue) {
         return Optional
                 .ofNullable(request.getHeader(name))
                 .filter(headerValue -> !headerValue.isBlank())
