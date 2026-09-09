@@ -2,6 +2,7 @@ package com.back.p67260811.global.security;
 
 import com.back.p67260811.domain.member.entity.Member;
 import com.back.p67260811.domain.member.service.MemberService;
+import com.back.p67260811.global.dto.RsData;
 import com.back.p67260811.global.exception.ServiceException;
 import com.back.p67260811.global.rq.Rq;
 import jakarta.servlet.FilterChain;
@@ -31,6 +32,22 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        try {
+            authenticate(request, response, filterChain);
+        } catch (ServiceException e) {
+            RsData rsData = e.getRsData();
+            response.setContentType("application/json; charset=UTF-8");
+            response.setStatus(rsData.getStatusCode());
+            response.getWriter().write("""
+                    {
+                        "resultCode": "%s",
+                        "msg": "%s"
+                    }
+                    """.formatted(rsData.getResultCode(), rsData.getMsg()));
+        }
+    }
+
+    private void authenticate(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(!request.getRequestURI().startsWith("/api/")) {
             filterChain.doFilter(request, response);
             return;
