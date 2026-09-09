@@ -71,7 +71,7 @@ public class ApiV1AdmPostControllerTest {
         resultActions
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.resultCode").value("403-1"))
-                .andExpect(jsonPath("$.msg").value("권한이 없습니다"));
+                .andExpect(jsonPath("$.msg").value("권한이 없습니다."));
 
     }
 }
